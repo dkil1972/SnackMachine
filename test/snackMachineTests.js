@@ -3,7 +3,8 @@ var should = require('chai').should();
 describe("SnackMachine", () => {
     describe("inserting Money", () => {
         it("should be one pound1 when one pound coin is inserted", function() {
-            pound().should.equal(1.0);
+            SnackMachine.insert(Money.pound());
+            SnackMachine.getTotal().should.equal(1.0);
         });
     });
 
@@ -15,14 +16,21 @@ describe("SnackMachine", () => {
 });
 
 let SnackMachine = (function () {
+    let totalAmount;
     return {
-        insert : function(pennyCount, tenPenceCount, fiftyPenceCount, poundCount, fivePoundCount, tenPoundCount) {
-            return (pennyCount * 0.01) + (tenPenceCount * 0.1) + (fiftyPenceCount * 0.5) + poundCount + (fivePoundCount * 5.0) + (tenPoundCount * 10.0);  
+        getTotal: function(){
+            return totalAmount;
+        },
+        insert : function(amount) {
+            totalAmount = amount;
         }
     };
 }());
 
-
-function pound() {
-    return SnackMachine.insert(0, 0, 0, 1, 0, 0, 0);
-}
+let Money = (function (){
+    return {
+        pound: function () {
+            return 1.0;
+        }
+    };
+}());
